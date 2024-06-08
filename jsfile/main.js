@@ -10,7 +10,6 @@ let question = [
 let questionNumber = Math.floor(Math.random() * question.length); //問題をランダムで出題する
 
 // HTML要素の取得
-
 const scoreElement = document.getElementById("score");
 const timeElement = document.getElementById("time");
 const yourMissCount = document.getElementById("miss-count");
@@ -21,7 +20,7 @@ const questionSection = document.getElementById("start");
 
 // ゲームの初期状態
 let score = 0;
-let time = 60;
+let time = 0;
 let missCount = 0;
 let isPlaying = false;
 // let timerId;
@@ -32,7 +31,7 @@ let questionIndex = 0; //回答初期値・現在単語のどこまでが合っ�
 let questionLength = question[questionNumber].length; //計算用の文字の長さ
 
 scoreElement.textContent = `Score: ${score}`;
-timeElement.textContent = `Time: ${time}`;
+timeElement.textContent = `Time Passed: ${time}`;
 yourMissCount.textContent = `You have made ${missCount} ${
   missCount === 0 || 1 ? "mistake" : "mistakes"
 }.`;
@@ -45,19 +44,9 @@ startBtn.addEventListener("click", () => {
     userInput.value = "";
     userInput.focus();
     startGame();
-    // timerId = setTimeout(() => {
-    //   clearInterval(timerIntervalId);
-    //   alert(`Game over! Your score is ${score}.`);
-    //   isPlaying = false;
-    //   userInput.disabled = true;
-    // }, 60 * 1000);
     timerIntervalId = setInterval(() => {
       time++;
-      timeElement.innerText = `Remaining Time: ${time}`;
-      // if (time <= 0) {
-      //   clearInterval(timerIntervalId);
-      //   isPlaying = false;
-      // }
+      timeElement.innerText = `Time Passed: ${time}`;
     }, 1000);
   }
 });
@@ -93,7 +82,6 @@ resetBtn.addEventListener("click", () => {
 
   // タイマーを停止
   clearInterval(timerIntervalId);
-  // clearTimeout(timerId);
 
   // HTML要素を更新
   questionSection.textContent = "もう一回やりましょう";
@@ -103,7 +91,7 @@ resetBtn.addEventListener("click", () => {
 // ディスプレイの更新
 function updateDisplay() {
   scoreElement.innerText = `Score: ${score}`;
-  timeElement.innerText = `Remaining Time: ${time}`;
+  timeElement.innerText = `Time Passed: ${time}`;
   yourMissCount.textContent = `You have made ${missCount} ${
     missCount === 0 || 1 ? "mistake" : "mistakes"
   }.`;
@@ -136,6 +124,7 @@ userInput.addEventListener("input", () => {
       questionLength = question[questionNumber].length;
       userInput.value = "";
       questionCount++;
+      questionSection.textContent = "";
     }
     questionSection.textContent = question[questionNumber].substring(
       questionIndex,
@@ -145,6 +134,7 @@ userInput.addEventListener("input", () => {
     scoreElement.innerText = `Score: ${score}`;
     if (questionCount == 5) {
       //終了
+      // ここ変えたい @kiyokaanan
       alert(`Congratulations! Your score is ${score}.`);
       resetBtn.click();
     }
