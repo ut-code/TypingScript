@@ -1,0 +1,6 @@
+const word = 'apple';
+if (word.length <= 5) {
+  console.log('Short word');
+} else {
+  console.log('Long word');
+}

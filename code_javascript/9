@@ -1,0 +1,2 @@
+const getMax = nums => Math.max(...nums);
+console.log(getMax([10, 5, 20, 15]));

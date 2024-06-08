@@ -1,0 +1,4 @@
+const fruits = ['apple', 'banana', 'orange'];
+const searchTerm = 'banana';
+const index = fruits.indexOf(searchTerm);
+console.log(index !== -1 ? `Found at index ${index}` : `${searchTerm} not found`);

@@ -1,0 +1,5 @@
+def is_palindrome(text):
+    return text == text[::-1]
+
+test_string = "radar"
+print(is_palindrome(test_string))
