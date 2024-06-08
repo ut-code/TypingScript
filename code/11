@@ -1,0 +1,5 @@
+import numpy as np
+matrix = np.random.randint(1, 10, size=(3, 3))
+transpose_matrix = np.transpose(matrix)
+print("Matrix:", matrix)
+print("Transposed matrix:", transpose_matrix)

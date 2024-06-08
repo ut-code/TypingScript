@@ -1,0 +1,5 @@
+import random
+num_list = [random.randint(1, 100) for _ in range(5)]
+max_num = max(num_list)
+print("Numbers:", num_list)
+print("Max number:", max_num)

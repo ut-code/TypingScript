@@ -1,0 +1,5 @@
+import random
+data = [random.randint(1, 100) for _ in range(5)]
+threshold = 50
+filtered_data = [x for x in data if x > threshold]
+print("Original data:", data)

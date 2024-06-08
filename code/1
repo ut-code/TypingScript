@@ -1,0 +1,5 @@
+import numpy as np
+data = np.random.randint(1, 100, size=(5,))
+mean_value = np.mean(data)
+print("Data:", data)
+print("Mean value:", mean_value)
