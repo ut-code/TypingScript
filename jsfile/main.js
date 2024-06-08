@@ -1,4 +1,4 @@
-let Q = [
+let question = [
   "apple",
   "banana",
   "melon",
@@ -7,7 +7,7 @@ let Q = [
   "blueberry",
   "orange",
 ]; //問題文
-let questionNumber = Math.floor(Math.random() * Q.length); //問題をランダムで出題する
+let questionNumber = Math.floor(Math.random() * question.length); //問題をランダムで出題する
 
 // HTML要素の取得
 
@@ -29,7 +29,7 @@ let timerIntervalId;
 let questionCount; // 今何問目か
 
 let questionIndex = 0; //回答初期値・現在単語のどこまでが合っているか判定している文字番号
-let questionLength = Q[questionNumber].length; //計算用の文字の長さ
+let questionLength = question[questionNumber].length; //計算用の文字の長さ
 
 scoreElement.textContent = `Score: ${score}`;
 timeElement.textContent = `Time: ${time}`;
@@ -53,11 +53,11 @@ startBtn.addEventListener("click", () => {
     // }, 60 * 1000);
     timerIntervalId = setInterval(() => {
       time++;
-      updateDisplay();
-      if (time <= 0) {
-        clearInterval(timerIntervalId);
-        isPlaying = false;
-      }
+      timeElement.innerText = `Remaining Time: ${time}`;
+      // if (time <= 0) {
+      //   clearInterval(timerIntervalId);
+      //   isPlaying = false;
+      // }
     }, 1000);
   }
 });
@@ -66,13 +66,14 @@ function startGame() {
   score = 0;
   time = 0;
   questionCount = 1;
-  questionNumber = Math.floor(Math.random() * Q.length);
+  questionNumber = Math.floor(Math.random() * question.length);
   questionIndex = 0;
-  questionLength = Q[questionNumber].length;
-  questionSection.textContent = Q[questionNumber].substring(
+  questionLength = question[questionNumber].length;
+  questionSection.textContent = question[questionNumber].substring(
     questionIndex,
     questionLength
   );
+  highlightNextCharacter();
   updateDisplay();
 }
 
@@ -81,10 +82,11 @@ resetBtn.addEventListener("click", () => {
   // ゲームの状態を初期化
   score = 0;
   time = 0;
+  missCount = 0;
   questionCount = 1;
-  questionNumber = Math.floor(Math.random() * Q.length);
+  questionNumber = Math.floor(Math.random() * question.length);
   questionIndex = 0;
-  questionLength = Q[questionNumber].length;
+  questionLength = question[questionNumber].length;
   isPlaying = false;
   userInput.disabled = true;
   userInput.value = "";
@@ -107,29 +109,43 @@ function updateDisplay() {
   }.`;
 }
 
-//ユーザー入力のチェック
+// 次に入力すべき文字の背景色を変更する関数
+function highlightNextCharacter() {
+  const questionText = question[questionNumber];
+  const highlightedText = questionText
+    .split("")
+    .map((char, index) => {
+      return index === questionIndex
+        ? `<span class="highlight">${char}</span>`
+        : char;
+    })
+    .join("");
+  questionSection.innerHTML = highlightedText;
+}
+
+//ユーザー入力時に動く関数
 userInput.addEventListener("input", () => {
   const inputValue = userInput.value;
-  if (inputValue === Q[questionNumber].substring(0, questionIndex + 1)) {
+  if (inputValue === question[questionNumber].substring(0, questionIndex + 1)) {
     questionIndex++;
     if (questionIndex === questionLength) {
       const scoreIncrement = calcScore(time, missCount, questionLength);
       score += scoreIncrement;
-      questionNumber = Math.floor(Math.random() * Q.length);
+      questionNumber = Math.floor(Math.random() * question.length);
       questionIndex = 0;
-      questionLength = Q[questionNumber].length;
+      questionLength = question[questionNumber].length;
       userInput.value = "";
       questionCount++;
     }
-    questionSection.textContent = Q[questionNumber].substring(
+    questionSection.textContent = question[questionNumber].substring(
       questionIndex,
       questionLength
     );
-    updateDisplay();
-    if(questionCount==5){
+    highlightNextCharacter();
+    scoreElement.innerText = `Score: ${score}`;
+    if (questionCount == 5) {
       //終了
       alert(`Congratulations! Your score is ${score}.`);
-      clearInterval(timerIntervalId);
       resetBtn.click();
     }
   } else {

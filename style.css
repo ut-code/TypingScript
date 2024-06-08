@@ -75,3 +75,7 @@ pre{
   background-color: #cccccc; /* 無効化されたボタンの背景色 */
   cursor: not-allowed;
 }
+
+.highlight {
+  background-color: yellow; /* ハイライトの背景色 */
+}
