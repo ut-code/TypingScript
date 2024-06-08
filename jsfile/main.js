@@ -24,7 +24,7 @@ let isPlaying = false;
 let timerId;
 let timerIntervalId;
 
-let Q_i = 0; //回答初期値・現在単語どこまで合っているか判定している文字番号
+let Q_i = 0; //回答初期値・現在単語のどこまでが合っているか判定している文字番号
 let Q_l = Q[Q_No].length; //計算用の文字の長さ
 
 // スタートボタンのクリックイベントリスナー
@@ -103,7 +103,8 @@ userInput.addEventListener("input", () => {
     }
     document.getElementById("start").innerHTML = Q[Q_No].substring(Q_i, Q_l);
     updateDisplay();
-  } else if (!currentWord.startsWith(inputValue)) {
+  } else {
+    // 間違った文字を入れた場合、userInputをその一文字前までとする
     userInput.value = userInput.value.slice(0, -1); // 如果输入错误，移除最后一个字符
   }
 });
