@@ -1,7 +1,60 @@
 .box1 {
-    background-color: lightgreen;
-    position: relative;
-    width: 80%;
-    height: 10%;
-    max-width: 800px;
-  }
+  background-color: lightgreen;
+  position: relative;
+  width: 80%;
+  height: 10%;
+  max-width: 800px;
+}
+
+.wrapper {
+  display: flex;
+  justify-content: center; /* 水平方向の中央揃え */
+  height: 100vh;
+}
+
+.btn {
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 12px;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+#start-btn {
+  background-color: #4caf50; /* 緑の背景色 */
+}
+
+#start-btn:hover {
+  background-color: #45a049; /* ホバー時の緑の背景色 */
+  transform: scale(1.05);
+}
+
+#start-btn:active {
+  background-color: #3e8e41; /* アクティブ時の緑の背景色 */
+  transform: scale(0.95);
+}
+
+#reset-btn {
+  background-color: #f44336; /* 赤の背景色 */
+}
+
+#reset-btn:hover {
+  background-color: #e53935; /* ホバー時の赤の背景色 */
+  transform: scale(1.05);
+}
+
+#reset-btn:active {
+  background-color: #d32f2f; /* アクティブ時の赤の背景色 */
+  transform: scale(0.95);
+}
+
+.btn:disabled {
+  background-color: #cccccc; /* 無効化されたボタンの背景色 */
+  cursor: not-allowed;
+}
