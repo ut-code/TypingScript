@@ -7,7 +7,7 @@ let Q = [
   "blueberry",
   "orange",
 ]; //問題文
-let Q_No = Math.floor(Math.random() * Q.length); //問題をランダムで出題する
+let questionNumber = Math.floor(Math.random() * Q.length); //問題をランダムで出題する
 
 // HTML要素の取得
 
@@ -27,8 +27,8 @@ let isPlaying = false;
 let timerId;
 let timerIntervalId;
 
-let Q_i = 0; //回答初期値・現在単語のどこまでが合っているか判定している文字番号
-let Q_l = Q[Q_No].length; //計算用の文字の長さ
+let questionIndex = 0; //回答初期値・現在単語のどこまでが合っているか判定している文字番号
+let questionLength = Q[questionNumber].length; //計算用の文字の長さ
 
 scoreElement.textContent = `Score: ${score}`;
 timeElement.textContent = `Remaining Time: ${time}`;
@@ -64,10 +64,13 @@ startBtn.addEventListener("click", () => {
 function startGame() {
   score = 0;
   time = 60;
-  Q_No = Math.floor(Math.random() * Q.length);
-  Q_i = 0;
-  Q_l = Q[Q_No].length;
-  questionSection.textContent = Q[Q_No].substring(Q_i, Q_l);
+  questionNumber = Math.floor(Math.random() * Q.length);
+  questionIndex = 0;
+  questionLength = Q[questionNumber].length;
+  questionSection.textContent = Q[questionNumber].substring(
+    questionIndex,
+    questionLength
+  );
   updateDisplay();
 }
 
@@ -76,9 +79,9 @@ resetBtn.addEventListener("click", () => {
   // ゲームの状態を初期化
   score = 0;
   time = 60;
-  Q_No = Math.floor(Math.random() * Q.length);
-  Q_i = 0;
-  Q_l = Q[Q_No].length;
+  questionNumber = Math.floor(Math.random() * Q.length);
+  questionIndex = 0;
+  questionLength = Q[questionNumber].length;
   isPlaying = false;
   userInput.disabled = true;
   userInput.value = "";
@@ -95,7 +98,7 @@ resetBtn.addEventListener("click", () => {
 // ディスプレイの更新
 function updateDisplay() {
   scoreElement.innerText = `Score: ${score}`;
-  timeElement.innerText = `Time: ${time}`;
+  timeElement.innerText = `Remaining Time: ${time}`;
   yourMissCount.textContent = `You have made ${missCount} ${
     missCount === 0 || 1 ? "mistake" : "mistakes"
   }.`;
@@ -104,17 +107,20 @@ function updateDisplay() {
 //ユーザー入力のチェック
 userInput.addEventListener("input", () => {
   const inputValue = userInput.value;
-  if (inputValue === Q[Q_No].substring(0, Q_i + 1)) {
-    Q_i++;
-    if (Q_i === Q_l) {
-      const scoreIncrement = calcScore(time, missCount, Q_l);
+  if (inputValue === Q[questionNumber].substring(0, questionIndex + 1)) {
+    questionIndex++;
+    if (questionIndex === questionLength) {
+      const scoreIncrement = calcScore(time, missCount, questionLength);
       score += scoreIncrement;
-      Q_No = Math.floor(Math.random() * Q.length);
-      Q_i = 0;
-      Q_l = Q[Q_No].length;
+      questionNumber = Math.floor(Math.random() * Q.length);
+      questionIndex = 0;
+      questionLength = Q[questionNumber].length;
       userInput.value = "";
     }
-    questionSection.textContent = Q[Q_No].substring(Q_i, Q_l);
+    questionSection.textContent = Q[questionNumber].substring(
+      questionIndex,
+      questionLength
+    );
     updateDisplay();
   } else {
     // 間違った文字を入れた場合、userInputをその一文字前までとする
