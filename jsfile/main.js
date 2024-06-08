@@ -3,7 +3,7 @@ let Q = [
   "banana",
   "melon",
   "mango",
-  "starwberry",
+  "strawberry",
   "blueberry",
   "orange",
 ]; //問題文
@@ -97,8 +97,8 @@ userInput.addEventListener("input", () => {
   if (inputValue === Q[Q_No].substring(0, Q_i + 1)) {
     Q_i++;
     if (Q_i === Q_l) {
-      score++;
-      const score = calcScore(time, missCount, Q_l);
+      const scoreIncrement = calcScore(time, missCount, Q_l);
+      score += scoreIncrement;
       Q_No = Math.floor(Math.random() * Q.length);
       Q_i = 0;
       Q_l = Q[Q_No].length;

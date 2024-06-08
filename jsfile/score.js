@@ -1,6 +1,6 @@
 function calcScore(time, missCount, questionLength) {
-  let typePerSecond = questionLength / time;
-  let accuracy = (questionLength - missCount) / questionLength;
-  let score = Math.floor(typePerSecond * accuracy * 25);
-  return score;
+  const typePerSecond = questionLength / time;
+  const accuracy = (questionLength - missCount) / questionLength;
+  const userScore = Math.floor(typePerSecond * accuracy * 25);
+  return userScore;
 }
