@@ -1,0 +1,8 @@
+const calculateBMI = (height, weight) => {
+  const bmi = weight / ((height / 100) ** 2);
+  return bmi.toFixed(2);
+};
+
+const height = 175;
+const weight = 70;
+console.log(`BMI: ${calculateBMI(height, weight)}`);

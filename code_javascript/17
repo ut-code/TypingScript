@@ -1,0 +1,2 @@
+const getMin = nums => nums.length > 0 ? Math.min(...nums) : 'No numbers provided';
+console.log(getMin([10, 5, 20, 15]));

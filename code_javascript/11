@@ -1,0 +1,8 @@
+const car = {
+  brand: 'Toyota',
+  model: 'Camry',
+  year: 2022
+};
+
+const { brand, model, year } = car;
+console.log(`Brand: ${brand}, Model: ${model}, Year: ${year}`);
