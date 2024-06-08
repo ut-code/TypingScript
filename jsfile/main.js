@@ -13,6 +13,7 @@ let Q_No = Math.floor(Math.random() * Q.length); //問題をランダムで出�
 
 const scoreElement = document.getElementById("score");
 const timeElement = document.getElementById("time");
+const yourMissCount = document.getElementById("miss-count");
 const startBtn = document.getElementById("start-btn");
 const resetBtn = document.getElementById("reset-btn");
 const userInput = document.getElementById("user-input");
@@ -21,12 +22,19 @@ const questionSection = document.getElementById("start");
 // ゲームの初期状態
 let score = 0;
 let time = 60;
+let missCount = 0;
 let isPlaying = false;
 let timerId;
 let timerIntervalId;
 
 let Q_i = 0; //回答初期値・現在単語のどこまでが合っているか判定している文字番号
 let Q_l = Q[Q_No].length; //計算用の文字の長さ
+
+scoreElement.textContent = `Score: ${score}`;
+timeElement.textContent = `Remaining Time: ${time}`;
+yourMissCount.textContent = `You have made ${missCount} ${
+  missCount === 0 || 1 ? "mistake" : "mistakes"
+}.`;
 
 // スタートボタンのクリックイベントリスナー
 startBtn.addEventListener("click", () => {
@@ -59,7 +67,7 @@ function startGame() {
   Q_No = Math.floor(Math.random() * Q.length);
   Q_i = 0;
   Q_l = Q[Q_No].length;
-  questionSection.innerHTML = Q[Q_No].substring(Q_i, Q_l);
+  questionSection.textContent = Q[Q_No].substring(Q_i, Q_l);
   updateDisplay();
 }
 
@@ -80,7 +88,7 @@ resetBtn.addEventListener("click", () => {
   clearTimeout(timerId);
 
   // HTML要素を更新
-  questionSection.innerHTML = "もう一回やりましょう";
+  questionSection.textContent = "もう一回やりましょう";
   updateDisplay();
 });
 
@@ -88,12 +96,14 @@ resetBtn.addEventListener("click", () => {
 function updateDisplay() {
   scoreElement.innerText = `Score: ${score}`;
   timeElement.innerText = `Time: ${time}`;
+  yourMissCount.textContent = `You have made ${missCount} ${
+    missCount === 0 || 1 ? "mistake" : "mistakes"
+  }.`;
 }
 
 //ユーザー入力のチェック
 userInput.addEventListener("input", () => {
   const inputValue = userInput.value;
-  const missCount = 0;
   if (inputValue === Q[Q_No].substring(0, Q_i + 1)) {
     Q_i++;
     if (Q_i === Q_l) {
@@ -104,11 +114,14 @@ userInput.addEventListener("input", () => {
       Q_l = Q[Q_No].length;
       userInput.value = "";
     }
-    questionSection.innerHTML = Q[Q_No].substring(Q_i, Q_l);
+    questionSection.textContent = Q[Q_No].substring(Q_i, Q_l);
     updateDisplay();
   } else {
     // 間違った文字を入れた場合、userInputをその一文字前までとする
     userInput.value = userInput.value.slice(0, -1); // 如果输入错误，移除最后一个字符
     missCount++;
+    yourMissCount.textContent = `You have made ${missCount} ${
+      missCount === 0 || 1 ? "mistake" : "mistakes"
+    }.`;
   }
 });
