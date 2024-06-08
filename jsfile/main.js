@@ -7,42 +7,82 @@ let Q = [
     "blueberry",
     "orange",
   ]; //問題文
-  let Q_No = Math.floor(Math.random() * Q.length); //問題をランダムで出題する
+let Q_No = Math.floor(Math.random() * Q.length); //問題をランダムで出題する
 
-  let Q_i = 0; //回答初期値・現在単語どこまで合っているか判定している文字番号
-  let Q_l = Q[Q_No].length; //計算用の文字の長さ
+// HTML要素の取得
 
-  window.addEventListener("keydown", push_Keydown);
+const scoreElement = document.getElementById("score");
+const timeElement = document.getElementById("time");
+const startBtn = document.getElementById("start-btn");
+const userInput = document.getElementById("user-input");
 
-  function push_Keydown(event) {
-    let keyCode = event.key;
-    if (Q_l == Q_l - Q_i) {
-      document.getElementById("start").innerHTML = Q[Q_No].substring(
-        Q_i,
-        Q_l
-      ); //問題を書き出す
-    }
 
-    if (Q[Q_No].charAt(Q_i) == keyCode) {
-      //押したキーが合っていたら
+// ゲームの初期状態
+let score = 0;
+let time = 60;
+let isPlaying = false;
+let timerId;
+let timerIntervalId;
 
-      Q_i++; //判定する文章に１足す
-      document.getElementById("start").innerHTML = Q[Q_No].substring(
-        Q_i,
-        Q_l
-      ); //問題を書き出す
+let Q_i = 0; //回答初期値・現在単語どこまで合っているか判定している文字番号
+let Q_l = Q[Q_No].length; //計算用の文字の長さ
 
-      if (Q_l - Q_i === 0) {
-        //全部正解したら
 
-        Q_No = Math.floor(Math.random() * Q.length); //問題をランダムで出題する
-        Q_i = 0; //回答初期値・現在どこまで合っているか判定している文字番号
-        Q_l = Q[Q_No].length; //計算用の文字の長さ
-
-        document.getElementById("start").innerHTML = Q[Q_No].substring(
-          Q_i,
-          Q_l
-        ); //新たな問題を書き出す
-      }
-    }
+// スタートボタンのクリックイベントリスナー
+startBtn.addEventListener("click", () => {
+  if (!isPlaying) {
+      isPlaying = true;
+      userInput.disabled = false;
+      userInput.value = '';
+      userInput.focus();
+      startGame();
+      timerId = setTimeout(() => {
+          clearInterval(timerIntervalId);
+          alert(`Game over! Your score is ${score}.`);
+          isPlaying = false;
+          userInput.disabled = true;
+      }, 60 * 1000);
+      timerIntervalId = setInterval(() => {
+          time--;
+          updateDisplay();
+          if (time <= 0) {
+              clearInterval(timerIntervalId);
+              isPlaying = false;
+          }
+      }, 1000);
   }
+});
+
+  function startGame(){
+    score = 0;
+    time = 60;
+    Q_No = Math.floor(Math.random() * Q.length);
+    Q_i = 0;
+    Q_l = Q[Q_No].length;
+    document.getElementById("start").innerHTML = Q[Q_No].substring(Q_i, Q_l);
+    updateDisplay();
+}
+// ユーザー入力のチェック
+userInput.addEventListener("input", () => {
+  const inputValue = userInput.value;
+  if (inputValue === Q[Q_No].substring(0, Q_i + 1)) {
+      Q_i++;
+      if (Q_i === Q_l) {
+          score++;
+          Q_No = Math.floor(Math.random() * Q.length);
+          Q_i = 0;
+          Q_l = Q[Q_No].length;
+          userInput.value = '';
+      }
+      document.getElementById("start").innerHTML = Q[Q_No].substring(Q_i, Q_l);
+      updateDisplay();
+  } else if (!currentWord.startsWith(inputValue)) {
+    userInput.value = userInput.value.slice(0, -1); // 如果输入错误，移除最后一个字符
+  }
+});
+
+// ディスプレイの更新
+function updateDisplay() {
+  scoreElement.innerText = `Score: ${score}`;
+  timeElement.innerText = `Time: ${time}`;
+}
