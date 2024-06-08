@@ -1,0 +1,5 @@
+import numpy as np
+array_2d = np.random.randint(1, 100, size=(3, 3))
+sum_row = np.sum(array_2d, axis=1)
+print("2D array:", array_2d)
+print("Sum of each row:", sum_row)
