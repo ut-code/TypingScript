@@ -16,6 +16,7 @@ const timeElement = document.getElementById("time");
 const startBtn = document.getElementById("start-btn");
 const resetBtn = document.getElementById("reset-btn");
 const userInput = document.getElementById("user-input");
+const questionSection = document.getElementById("start");
 
 // ゲームの初期状態
 let score = 0;
@@ -58,7 +59,7 @@ function startGame() {
   Q_No = Math.floor(Math.random() * Q.length);
   Q_i = 0;
   Q_l = Q[Q_No].length;
-  document.getElementById("start").innerHTML = Q[Q_No].substring(Q_i, Q_l);
+  questionSection.innerHTML = Q[Q_No].substring(Q_i, Q_l);
   updateDisplay();
 }
 
@@ -79,7 +80,7 @@ resetBtn.addEventListener("click", () => {
   clearTimeout(timerId);
 
   // HTML要素を更新
-  document.getElementById("start").innerHTML = "もう一回やりましょう";
+  questionSection.innerHTML = "もう一回やりましょう";
   updateDisplay();
 });
 
@@ -92,19 +93,22 @@ function updateDisplay() {
 //ユーザー入力のチェック
 userInput.addEventListener("input", () => {
   const inputValue = userInput.value;
+  const missCount = 0;
   if (inputValue === Q[Q_No].substring(0, Q_i + 1)) {
     Q_i++;
     if (Q_i === Q_l) {
       score++;
+      const score = calcScore(time, missCount, Q_l);
       Q_No = Math.floor(Math.random() * Q.length);
       Q_i = 0;
       Q_l = Q[Q_No].length;
       userInput.value = "";
     }
-    document.getElementById("start").innerHTML = Q[Q_No].substring(Q_i, Q_l);
+    questionSection.innerHTML = Q[Q_No].substring(Q_i, Q_l);
     updateDisplay();
   } else {
     // 間違った文字を入れた場合、userInputをその一文字前までとする
     userInput.value = userInput.value.slice(0, -1); // 如果输入错误，移除最后一个字符
+    missCount++;
   }
 });
