@@ -24,14 +24,15 @@ let score = 0;
 let time = 60;
 let missCount = 0;
 let isPlaying = false;
-let timerId;
+// let timerId;
 let timerIntervalId;
+let questionCount; // 今何問目か
 
 let questionIndex = 0; //回答初期値・現在単語のどこまでが合っているか判定している文字番号
 let questionLength = Q[questionNumber].length; //計算用の文字の長さ
 
 scoreElement.textContent = `Score: ${score}`;
-timeElement.textContent = `Remaining Time: ${time}`;
+timeElement.textContent = `Time: ${time}`;
 yourMissCount.textContent = `You have made ${missCount} ${
   missCount === 0 || 1 ? "mistake" : "mistakes"
 }.`;
@@ -44,14 +45,14 @@ startBtn.addEventListener("click", () => {
     userInput.value = "";
     userInput.focus();
     startGame();
-    timerId = setTimeout(() => {
-      clearInterval(timerIntervalId);
-      alert(`Game over! Your score is ${score}.`);
-      isPlaying = false;
-      userInput.disabled = true;
-    }, 60 * 1000);
+    // timerId = setTimeout(() => {
+    //   clearInterval(timerIntervalId);
+    //   alert(`Game over! Your score is ${score}.`);
+    //   isPlaying = false;
+    //   userInput.disabled = true;
+    // }, 60 * 1000);
     timerIntervalId = setInterval(() => {
-      time--;
+      time++;
       updateDisplay();
       if (time <= 0) {
         clearInterval(timerIntervalId);
@@ -63,7 +64,8 @@ startBtn.addEventListener("click", () => {
 
 function startGame() {
   score = 0;
-  time = 60;
+  time = 0;
+  questionCount = 1;
   questionNumber = Math.floor(Math.random() * Q.length);
   questionIndex = 0;
   questionLength = Q[questionNumber].length;
@@ -78,7 +80,8 @@ function startGame() {
 resetBtn.addEventListener("click", () => {
   // ゲームの状態を初期化
   score = 0;
-  time = 60;
+  time = 0;
+  questionCount = 1;
   questionNumber = Math.floor(Math.random() * Q.length);
   questionIndex = 0;
   questionLength = Q[questionNumber].length;
@@ -88,7 +91,7 @@ resetBtn.addEventListener("click", () => {
 
   // タイマーを停止
   clearInterval(timerIntervalId);
-  clearTimeout(timerId);
+  // clearTimeout(timerId);
 
   // HTML要素を更新
   questionSection.textContent = "もう一回やりましょう";
@@ -116,12 +119,19 @@ userInput.addEventListener("input", () => {
       questionIndex = 0;
       questionLength = Q[questionNumber].length;
       userInput.value = "";
+      questionCount++;
     }
     questionSection.textContent = Q[questionNumber].substring(
       questionIndex,
       questionLength
     );
     updateDisplay();
+    if(questionCount==5){
+      //終了
+      alert(`Congratulations! Your score is ${score}.`);
+      clearInterval(timerIntervalId);
+      resetBtn.click();
+    }
   } else {
     // 間違った文字を入れた場合、userInputをその一文字前までとする
     userInput.value = userInput.value.slice(0, -1); // 如果输入错误，移除最后一个字符
