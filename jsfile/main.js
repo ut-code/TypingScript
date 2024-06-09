@@ -134,7 +134,7 @@ userInput.addEventListener("input", () => {
     scoreElement.innerText = `Score: ${score}`;
     if (questionCount == 5) {
       //終了
-      // ここ変えたい @kiyokaanan
+      questionSection.textContent = "";
       alert(`Congratulations! Your score is ${score}.`);
       resetBtn.click();
     }
