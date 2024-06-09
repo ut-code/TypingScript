@@ -1,38 +1,54 @@
-<!-- 見えない部分 -->
-<html>
-  <head>
-    <link rel="stylesheet" href="./style.css" />
-    <script src="./jsfile/score.js"></script>
-    <script src="./jsfile/main.js" defer></script>
-  </head>
-  <!-- ↓ここから見える部分↓ -->
+<!DOCTYPE html>
+<html lang="ja">
 
-  <body>
-    <div class="wrapper">
-      <div class="box1">
-        <p id="question-count"></p>
-        <p id="answer-section"></p>
-        <p id="start" class="text">スタートボタンを押してください</p>
-        <p id="question-section"></p>
-      </div>
-      <div class="box2">
-        <div class="box3">
-          <button class="btn" id="start-btn">スタート</button>
-          <button class="btn" id="reset-btn">リセット</button>
-        </div>
-        <div class="box4">
-          <textarea
-            type="text"
-            id="user-input"
-            placeholder="入力して下さい"
-            disabled
-          ></textarea>
-          <p id="score"></p>
-          <p id="time"></p>
-          <p id="miss-count"></p>
-          <p id="question-count"></p>
-        </div>
-      </div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Typing Script</title>
+    <style>
+        img{
+            width: 100%;
+        }
+        p{
+            font-size: 20px;
+            color: black;
+        }
+        .game{
+            display: flex;
+            justify-content: space-around;
+        }
+        .card{
+            width: 40%;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body style="margin:0 10%;">
+    <div class="image"> 
+        <img src="img/typing.png" alt="typing">
     </div>
-  </body>
+    <div class="title">
+        <h1>Typing Script</h1>
+    </div>
+        <h2>ゲームを始める</h2>
+    <div class="game">
+        <div class="card">
+            <a href="game.html?lang=js">
+                <img src="img/js.png" alt="javascript">
+               <p>JavaScript</p> 
+            </a>
+        </div>
+        <div class="card">
+            <a href="game.html?lang=py">
+                <img src="img/python.png" alt="python">
+                <p>Python</p>
+            </a>
+        </div>
+    </div>
+</body>
+
 </html>

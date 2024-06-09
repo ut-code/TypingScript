@@ -10,9 +10,7 @@ const questionSection = document.getElementById("question-section");
 const startBtn = document.getElementById("start-btn");
 const resetBtn = document.getElementById("reset-btn");
 const userInput = document.getElementById("user-input");
-const py_q_length = 22;
 
-let questionNumber;
 let question;
 // ゲームの初期状態
 let score = 0;
@@ -68,8 +66,11 @@ async function startGame() {
 }
 
 async function setQuestion() {
-  questionNumber = Math.floor(Math.random() * py_q_length);
-  const response = await fetch(`./code_python/${questionNumber}`);
+  let lang = new URLSearchParams(window.location.search).get("lang");
+  let lengthByLang = { js: 20, py: 22 };
+  let subpathByLang = { js: "code_javascript", py: "code_python" };
+  questionNumber = Math.floor(Math.random() * lengthByLang[lang]);
+  const response = await fetch(`./${subpathByLang[lang]}/${questionNumber}`);
   question = await response.text();
   questionIndex = 0;
   questionLength = question.length;
@@ -85,7 +86,6 @@ resetBtn.addEventListener("click", () => {
   time = 0;
   missCount = 0;
   questionCount = 1;
-  questionNumber = Math.floor(Math.random() * question.length);
   questionIndex = 0;
   questionLength = question.length;
   isPlaying = false;
@@ -97,6 +97,7 @@ resetBtn.addEventListener("click", () => {
 
   // HTML要素を更新
   startSection.textContent = "スタートボタンを押すと再開できます";
+  questionSection.innerText = "";
   updateDisplay();
   theQuestionCount.textContent = "";
 });
