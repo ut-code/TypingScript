@@ -1,13 +1,6 @@
-let question = [
-  "apple",
-  "banana",
-  "melon",
-  "mango",
-  "strawberry",
-  "blueberry",
-  "orange",
-]; //問題文
-let questionNumber = Math.floor(Math.random() * question.length); //問題をランダムで出題する
+
+let questionNumber = Math.floor(Math.random() * 22); //問題をランダムで出題する
+let question; 
 
 // HTML要素の取得
 const scoreElement = document.getElementById("score");
@@ -27,8 +20,10 @@ let isPlaying = false;
 let timerIntervalId;
 let questionCount; // 今何問目か
 
+
+
 let questionIndex = 0; //回答初期値・現在単語のどこまでが合っているか判定している文字番号
-let questionLength = question[questionNumber].length; //計算用の文字の長さ
+let questionLength; //計算用の文字の長さ
 
 scoreElement.textContent = `Score: ${score}`;
 timeElement.textContent = `Time Passed: ${time}`;
@@ -51,14 +46,16 @@ startBtn.addEventListener("click", () => {
   }
 });
 
-function startGame() {
+async function startGame() {
   score = 0;
   time = 0;
   questionCount = 1;
-  questionNumber = Math.floor(Math.random() * question.length);
+  questionNumber = Math.floor(Math.random() * 22);
+  const response = await fetch(`/code_python/${questionNumber}`);
+  question = await response.text();
   questionIndex = 0;
-  questionLength = question[questionNumber].length;
-  questionSection.textContent = question[questionNumber].substring(
+  questionLength = question.length;
+  questionSection.textContent = question.substring(
     questionIndex,
     questionLength
   );
@@ -75,7 +72,7 @@ resetBtn.addEventListener("click", () => {
   questionCount = 1;
   questionNumber = Math.floor(Math.random() * question.length);
   questionIndex = 0;
-  questionLength = question[questionNumber].length;
+  questionLength = question.length;
   isPlaying = false;
   userInput.disabled = true;
   userInput.value = "";
@@ -99,7 +96,7 @@ function updateDisplay() {
 
 // 次に入力すべき文字の背景色を変更する関数
 function highlightNextCharacter() {
-  const questionText = question[questionNumber];
+  const questionText = question;
   const highlightedText = questionText
     .split("")
     .map((char, index) => {
@@ -114,19 +111,19 @@ function highlightNextCharacter() {
 //ユーザー入力時に動く関数
 userInput.addEventListener("input", () => {
   const inputValue = userInput.value;
-  if (inputValue === question[questionNumber].substring(0, questionIndex + 1)) {
+  if (inputValue === question.substring(0, questionIndex + 1)) {
     questionIndex++;
     if (questionIndex === questionLength) {
       const scoreIncrement = calcScore(time, missCount, questionLength);
       score += scoreIncrement;
       questionNumber = Math.floor(Math.random() * question.length);
       questionIndex = 0;
-      questionLength = question[questionNumber].length;
+      questionLength = question.length;
       userInput.value = "";
       questionCount++;
       questionSection.textContent = "";
     }
-    questionSection.textContent = question[questionNumber].substring(
+    questionSection.textContent = question.substring(
       questionIndex,
       questionLength
     );
