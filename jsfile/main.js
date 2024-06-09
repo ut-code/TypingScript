@@ -6,11 +6,13 @@ const scoreElement = document.getElementById("score");
 const timeElement = document.getElementById("time");
 const yourMissCount = document.getElementById("miss-count");
 const theQuestionCount = document.getElementById("question-count");
+const startSection = document.getElementById("start");
+const answerSection = document.getElementById("answer-section");
+const questionSection = document.getElementById("question-section");
+
 const startBtn = document.getElementById("start-btn");
 const resetBtn = document.getElementById("reset-btn");
 const userInput = document.getElementById("user-input");
-const questionSection = document.getElementById("start");
-const answerSection = document.getElementById("answer-section");
 
 // ゲームの初期状態
 let score = 0;
@@ -65,11 +67,8 @@ async function startGame() {
   question = await response.text();
   questionIndex = 0;
   questionLength = question.length;
-  // questionSection.textContent = question.substring(
-  //   questionIndex,
-  //   questionLength
-  // );
   highlightNextCharacter();
+  startSection.textContent = "";
   updateDisplay();
   theQuestionCount.textContent = `Question ${questionCount}`;
   answerSection.textContent = "";
@@ -93,7 +92,7 @@ resetBtn.addEventListener("click", () => {
   clearInterval(timerIntervalId);
 
   // HTML要素を更新
-  questionSection.textContent = "スタートボタンを押すと再開できます";
+  startSection.textContent = "スタートボタンを押すと再開できます";
   updateDisplay();
 });
 
@@ -136,12 +135,8 @@ userInput.addEventListener("input", () => {
       questionLength = question.length;
       userInput.value = "";
       questionCount++;
-      questionSection.textContent = "";
+      startSection.textContent = "";
     }
-    questionSection.textContent = question.substring(
-      questionIndex,
-      questionLength
-    );
     highlightNextCharacter();
     scoreElement.innerText = `Score: ${score}`;
     theQuestionCount.textContent = `Question ${questionCount}`;
