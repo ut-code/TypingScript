@@ -1,6 +1,3 @@
-let questionNumber = Math.floor(Math.random() * 22); //問題をランダムで出題する
-let question;
-
 // HTML要素の取得
 const scoreElement = document.getElementById("score");
 const timeElement = document.getElementById("time");
@@ -13,7 +10,10 @@ const questionSection = document.getElementById("question-section");
 const startBtn = document.getElementById("start-btn");
 const resetBtn = document.getElementById("reset-btn");
 const userInput = document.getElementById("user-input");
+const py_q_length = 22;
 
+let questionNumber;
+let question;
 // ゲームの初期状態
 let score = 0;
 let time = 0;
@@ -62,7 +62,13 @@ async function startGame() {
   score = 0;
   time = 0;
   questionCount = 1;
-  questionNumber = Math.floor(Math.random() * 22);
+  setQuestion();
+  theQuestionCount.textContent = `Question ${questionCount}`;
+  answerSection.textContent = "";
+}
+
+async function setQuestion() {
+  questionNumber = Math.floor(Math.random() * py_q_length);
   const response = await fetch(`/code_python/${questionNumber}`);
   question = await response.text();
   questionIndex = 0;
@@ -70,8 +76,6 @@ async function startGame() {
   highlightNextCharacter();
   startSection.textContent = "";
   updateDisplay();
-  theQuestionCount.textContent = `Question ${questionCount}`;
-  answerSection.textContent = "";
 }
 
 // リセットボタンのクリックイベントリスナー
@@ -94,6 +98,7 @@ resetBtn.addEventListener("click", () => {
   // HTML要素を更新
   startSection.textContent = "スタートボタンを押すと再開できます";
   updateDisplay();
+  theQuestionCount.textContent = "";
 });
 
 // ディスプレイの更新
@@ -103,7 +108,6 @@ function updateDisplay() {
   yourMissCount.textContent = `You made ${missCount} ${
     missCount === 0 || 1 ? "mistake" : "mistakes"
   }.`;
-  theQuestionCount.textContent = "";
 }
 
 // 次に入力すべき文字の背景色を変更する関数
@@ -113,7 +117,7 @@ function highlightNextCharacter() {
     .split("")
     .map((char, index) => {
       return index === questionIndex
-        ? `<span class="highlight">${char}</span>`
+        ? `<span class="highlight">${char == " " ? "&nbsp;" : char}</span>`
         : char !== " "
         ? char
         : "&nbsp;";
@@ -130,9 +134,7 @@ userInput.addEventListener("input", () => {
     if (questionIndex === questionLength) {
       const scoreIncrement = calcScore(time, missCount, questionLength);
       score += scoreIncrement;
-      questionNumber = Math.floor(Math.random() * question.length);
-      questionIndex = 0;
-      questionLength = question.length;
+      setQuestion();
       userInput.value = "";
       questionCount++;
       startSection.textContent = "";
