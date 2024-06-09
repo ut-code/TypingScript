@@ -27,6 +27,13 @@ let questionCount; // 今何問目か
 let questionIndex = 0; //回答初期値・現在単語のどこまでが合っているか判定している文字番号
 let questionLength; //計算用の文字の長さ
 
+//backspace無効化
+userInput.addEventListener("keydown", function(e) {
+  if (e.key === "Backspace") {
+      e.preventDefault();
+  }
+});
+
 document.addEventListener("click", () => {
   userInput.focus();
 });
