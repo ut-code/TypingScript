@@ -31,7 +31,7 @@ let questionIndex = 0; //回答初期値・現在単語のどこまでが合っ�
 let questionLength = question[questionNumber].length; //計算用の文字の長さ
 
 scoreElement.textContent = `Score: ${score}`;
-timeElement.textContent = `Time Passed: ${time}`;
+timeElement.textContent = `Time Passed: ${time} s`;
 yourMissCount.textContent = `You have made ${missCount} ${
   missCount === 0 || 1 ? "mistake" : "mistakes"
 }.`;
@@ -46,7 +46,7 @@ startBtn.addEventListener("click", () => {
     startGame();
     timerIntervalId = setInterval(() => {
       time++;
-      timeElement.innerText = `Time Passed: ${time}`;
+      timeElement.innerText = `Time Passed: ${time} s`;
     }, 1000);
   }
 });
@@ -91,7 +91,7 @@ resetBtn.addEventListener("click", () => {
 // ディスプレイの更新
 function updateDisplay() {
   scoreElement.innerText = `Score: ${score}`;
-  timeElement.innerText = `Time Passed: ${time}`;
+  timeElement.innerText = `Time Passed: ${time} s`;
   yourMissCount.textContent = `You have made ${missCount} ${
     missCount === 0 || 1 ? "mistake" : "mistakes"
   }.`;
