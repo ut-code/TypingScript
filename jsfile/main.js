@@ -69,7 +69,7 @@ async function startGame() {
 
 async function setQuestion() {
   questionNumber = Math.floor(Math.random() * py_q_length);
-  const response = await fetch(`/code_python/${questionNumber}`);
+  const response = await fetch(`./code_python/${questionNumber}`);
   question = await response.text();
   questionIndex = 0;
   questionLength = question.length;
