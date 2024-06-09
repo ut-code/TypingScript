@@ -38,7 +38,7 @@ document.addEventListener("click", () => {
 });
 scoreElement.textContent = `Score: ${score}`;
 timeElement.textContent = `Time Passed: ${time} s`;
-yourMissCount.textContent = `You have made ${missCount} ${
+yourMissCount.textContent = `You made ${missCount} ${
   missCount === 0 || 1 ? "mistake" : "mistakes"
 }.`;
 theQuestionCount.textContent = "";
@@ -100,7 +100,7 @@ resetBtn.addEventListener("click", () => {
 function updateDisplay() {
   scoreElement.innerText = `Score: ${score}`;
   timeElement.innerText = `Time Passed: ${time} s`;
-  yourMissCount.textContent = `You have made ${missCount} ${
+  yourMissCount.textContent = `You made ${missCount} ${
     missCount === 0 || 1 ? "mistake" : "mistakes"
   }.`;
   theQuestionCount.textContent = "";
@@ -150,7 +150,7 @@ userInput.addEventListener("input", () => {
     // 間違った文字を入れた場合、userInputをその一文字前までとする
     userInput.value = userInput.value.slice(0, -1);
     missCount++;
-    yourMissCount.textContent = `You have made ${missCount} ${
+    yourMissCount.textContent = `You made ${missCount} ${
       missCount === 0 || 1 ? "mistake" : "mistakes"
     }.`;
   }
