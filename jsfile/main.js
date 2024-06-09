@@ -141,7 +141,9 @@ userInput.addEventListener("input", () => {
       if (questionIndex === questionLength) {
         const scoreIncrement = calcScore(time, missCount, questionLength);
         score += scoreIncrement;
-        setQuestion();
+        if (questionCount !== 5) {
+          setQuestion();
+        }
         userInput.value = "";
         questionCount++;
         startSection.textContent = "";
