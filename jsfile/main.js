@@ -114,7 +114,7 @@ function highlightNextCharacter() {
         : char;
     })
     .join("");
-  questionSection.innerHTML = highlightedText;
+  questionSection.innerHTML = highlightedText.replace(/\n/g, "<br>");
 }
 
 //ユーザー入力時に動く関数
