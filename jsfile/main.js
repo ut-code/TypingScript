@@ -34,6 +34,11 @@ userInput.addEventListener("keydown", function (e) {
 document.addEventListener("click", () => {
   userInput.focus();
 });
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    startBtn.click();
+  }
+});
 scoreElement.textContent = `Score: ${score}`;
 timeElement.textContent = `Time Passed: ${time} s`;
 yourMissCount.textContent = `You made ${missCount} ${
@@ -129,32 +134,50 @@ function highlightNextCharacter() {
 
 //ユーザー入力時に動く関数
 userInput.addEventListener("input", () => {
-  const inputValue = userInput.value;
-  if (inputValue === question.substring(0, questionIndex + 1)) {
-    questionIndex++;
-    if (questionIndex === questionLength) {
-      const scoreIncrement = calcScore(time, missCount, questionLength);
-      score += scoreIncrement;
-      setQuestion();
-      userInput.value = "";
-      questionCount++;
-      startSection.textContent = "";
-    }
-    highlightNextCharacter();
-    scoreElement.innerText = `Score: ${score}`;
-    theQuestionCount.textContent = `Question ${questionCount}`;
-    if (questionCount == 6) {
-      //終了
-      theQuestionCount.textContent = "";
-      answerSection.textContent = `Congratulations! Your score is ${score}.`;
-      resetBtn.click();
+  if (isHalfWidth(userInput.value)) {
+    const inputValue = userInput.value;
+    if (inputValue === question.substring(0, questionIndex + 1)) {
+      questionIndex++;
+      if (questionIndex === questionLength) {
+        const scoreIncrement = calcScore(time, missCount, questionLength);
+        score += scoreIncrement;
+        setQuestion();
+        userInput.value = "";
+        questionCount++;
+        startSection.textContent = "";
+      }
+      highlightNextCharacter();
+      scoreElement.innerText = `Score: ${score}`;
+      theQuestionCount.textContent = `Question ${questionCount}`;
+      if (questionCount == 6) {
+        //終了
+        theQuestionCount.textContent = "";
+        answerSection.textContent = `Congratulations! Your score is ${score}.`;
+        resetBtn.click();
+      }
+    } else {
+      // 間違った文字を入れた場合、userInputをその一文字前までとする
+      userInput.value = userInput.value.slice(0, -1);
+      missCount++;
+      yourMissCount.textContent = `You made ${missCount} ${
+        missCount === 0 || 1 ? "mistake" : "mistakes"
+      }.`;
     }
   } else {
-    // 間違った文字を入れた場合、userInputをその一文字前までとする
-    userInput.value = userInput.value.slice(0, -1);
-    missCount++;
-    yourMissCount.textContent = `You made ${missCount} ${
-      missCount === 0 || 1 ? "mistake" : "mistakes"
-    }.`;
+    alert("半角スペースで入力してください。");
+    userInput.value = "";
   }
 });
+
+function isHalfWidth(str) {
+  for (let char of str) {
+    if (char.charCodeAt(0) > 255) {
+      return false; // 全角文字が含まれている場合
+    }
+  }
+  return true; // 全ての文字が半角
+}
+
+// function isHalfWidth(str) {
+//   return /^[\x20-\x7E]*$/.test(str); // 半角文字のみを許可
+// }
