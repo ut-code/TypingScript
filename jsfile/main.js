@@ -6,10 +6,12 @@ let question;
 const scoreElement = document.getElementById("score");
 const timeElement = document.getElementById("time");
 const yourMissCount = document.getElementById("miss-count");
+const theQuestionCount = document.getElementById("question-count");
 const startBtn = document.getElementById("start-btn");
 const resetBtn = document.getElementById("reset-btn");
 const userInput = document.getElementById("user-input");
 const questionSection = document.getElementById("start");
+const answerSection = document.getElementById("answer-section");
 
 // ゲームの初期状態
 let score = 0;
@@ -25,11 +27,15 @@ let questionCount; // 今何問目か
 let questionIndex = 0; //回答初期値・現在単語のどこまでが合っているか判定している文字番号
 let questionLength; //計算用の文字の長さ
 
+document.addEventListener("click", () => {
+  userInput.focus();
+});
 scoreElement.textContent = `Score: ${score}`;
-timeElement.textContent = `Time Passed: ${time}`;
+timeElement.textContent = `Time Passed: ${time} s`;
 yourMissCount.textContent = `You have made ${missCount} ${
   missCount === 0 || 1 ? "mistake" : "mistakes"
 }.`;
+theQuestionCount.textContent = "";
 
 // スタートボタンのクリックイベントリスナー
 startBtn.addEventListener("click", () => {
@@ -41,7 +47,7 @@ startBtn.addEventListener("click", () => {
     startGame();
     timerIntervalId = setInterval(() => {
       time++;
-      timeElement.innerText = `Time Passed: ${time}`;
+      timeElement.innerText = `Time Passed: ${time} s`;
     }, 1000);
   }
 });
@@ -61,6 +67,8 @@ async function startGame() {
   );
   highlightNextCharacter();
   updateDisplay();
+  theQuestionCount.textContent = `Question ${questionCount}`;
+  answerSection.textContent = "";
 }
 
 // リセットボタンのクリックイベントリスナー
@@ -81,17 +89,18 @@ resetBtn.addEventListener("click", () => {
   clearInterval(timerIntervalId);
 
   // HTML要素を更新
-  questionSection.textContent = "もう一回やりましょう";
+  questionSection.textContent = "スタートボタンを押すと再開できます";
   updateDisplay();
 });
 
 // ディスプレイの更新
 function updateDisplay() {
   scoreElement.innerText = `Score: ${score}`;
-  timeElement.innerText = `Time Passed: ${time}`;
+  timeElement.innerText = `Time Passed: ${time} s`;
   yourMissCount.textContent = `You have made ${missCount} ${
     missCount === 0 || 1 ? "mistake" : "mistakes"
   }.`;
+  theQuestionCount.textContent = "";
 }
 
 // 次に入力すべき文字の背景色を変更する関数
@@ -129,15 +138,16 @@ userInput.addEventListener("input", () => {
     );
     highlightNextCharacter();
     scoreElement.innerText = `Score: ${score}`;
-    if (questionCount == 5) {
+    theQuestionCount.textContent = `Question ${questionCount}`;
+    if (questionCount == 6) {
       //終了
-      // ここ変えたい @kiyokaanan
-      alert(`Congratulations! Your score is ${score}.`);
+      theQuestionCount.textContent = "";
+      answerSection.textContent = `Congratulations! Your score is ${score}.`;
       resetBtn.click();
     }
   } else {
     // 間違った文字を入れた場合、userInputをその一文字前までとする
-    userInput.value = userInput.value.slice(0, -1); // 如果输入错误，移除最后一个字符
+    userInput.value = userInput.value.slice(0, -1);
     missCount++;
     yourMissCount.textContent = `You have made ${missCount} ${
       missCount === 0 || 1 ? "mistake" : "mistakes"
