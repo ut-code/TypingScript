@@ -1,6 +1,5 @@
-
 let questionNumber = Math.floor(Math.random() * 22); //問題をランダムで出題する
-let question; 
+let question;
 
 // HTML要素の取得
 const scoreElement = document.getElementById("score");
@@ -22,15 +21,13 @@ let isPlaying = false;
 let timerIntervalId;
 let questionCount; // 今何問目か
 
-
-
 let questionIndex = 0; //回答初期値・現在単語のどこまでが合っているか判定している文字番号
 let questionLength; //計算用の文字の長さ
 
 //backspace無効化
-userInput.addEventListener("keydown", function(e) {
+userInput.addEventListener("keydown", function (e) {
   if (e.key === "Backspace") {
-      e.preventDefault();
+    e.preventDefault();
   }
 });
 
@@ -68,10 +65,6 @@ async function startGame() {
   question = await response.text();
   questionIndex = 0;
   questionLength = question.length;
-  questionSection.textContent = question.substring(
-    questionIndex,
-    questionLength
-  );
   highlightNextCharacter();
   updateDisplay();
   theQuestionCount.textContent = `Question ${questionCount}`;
@@ -139,10 +132,6 @@ userInput.addEventListener("input", () => {
       questionCount++;
       questionSection.textContent = "";
     }
-    questionSection.textContent = question.substring(
-      questionIndex,
-      questionLength
-    );
     highlightNextCharacter();
     scoreElement.innerText = `Score: ${score}`;
     theQuestionCount.textContent = `Question ${questionCount}`;
