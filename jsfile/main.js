@@ -13,6 +13,7 @@ let questionNumber = Math.floor(Math.random() * question.length); //問題をラ
 const scoreElement = document.getElementById("score");
 const timeElement = document.getElementById("time");
 const yourMissCount = document.getElementById("miss-count");
+const theQuestionCount = document.getElementById("question-count");
 const startBtn = document.getElementById("start-btn");
 const resetBtn = document.getElementById("reset-btn");
 const userInput = document.getElementById("user-input");
@@ -35,6 +36,7 @@ timeElement.textContent = `Time Passed: ${time} s`;
 yourMissCount.textContent = `You have made ${missCount} ${
   missCount === 0 || 1 ? "mistake" : "mistakes"
 }.`;
+theQuestionCount.textContent = "";
 
 // スタートボタンのクリックイベントリスナー
 startBtn.addEventListener("click", () => {
@@ -58,12 +60,10 @@ function startGame() {
   questionNumber = Math.floor(Math.random() * question.length);
   questionIndex = 0;
   questionLength = question[questionNumber].length;
-  questionSection.textContent = question[questionNumber].substring(
-    questionIndex,
-    questionLength
-  );
+  questionSection.textContent = question[questionNumber];
   highlightNextCharacter();
   updateDisplay();
+  theQuestionCount.textContent = `Question ${questionCount}`;
 }
 
 // リセットボタンのクリックイベントリスナー
@@ -95,6 +95,7 @@ function updateDisplay() {
   yourMissCount.textContent = `You have made ${missCount} ${
     missCount === 0 || 1 ? "mistake" : "mistakes"
   }.`;
+  theQuestionCount.textContent = "";
 }
 
 // 次に入力すべき文字の背景色を変更する関数
@@ -126,13 +127,14 @@ userInput.addEventListener("input", () => {
       questionCount++;
       questionSection.textContent = "";
     }
-    questionSection.textContent = question[questionNumber].substring(
-      questionIndex,
-      questionLength
-    );
+    // questionSection.textContent = question[questionNumber].substring(
+    //   questionIndex,
+    //   questionLength
+    // );
     highlightNextCharacter();
     scoreElement.innerText = `Score: ${score}`;
-    if (questionCount == 5) {
+    theQuestionCount.textContent = `Question ${questionCount}`;
+    if (questionCount == 6) {
       //終了
       questionSection.textContent = "";
       alert(`Congratulations! Your score is ${score}.`);

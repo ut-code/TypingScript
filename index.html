@@ -1,31 +1,36 @@
 <!-- 見えない部分 -->
 <html>
+  <head>
+    <link rel="stylesheet" href="./style.css" />
+    <script src="./jsfile/score.js"></script>
+    <script src="./jsfile/main.js" defer></script>
+  </head>
+  <!-- ↓ここから見える部分↓ -->
 
-<head>
-  <link rel="stylesheet" href="./style.css" />
-  <script src="./jsfile/score.js"></script>
-  <script src="./jsfile/main.js" defer></script>
-</head>
-<!-- ↓ここから見える部分↓ -->
-
-<body>
-  <div class="wrapper">
-    <div class="box1">
-      <pre id="start" class="text">Welcome to Typing Script game!</pre>
-    </div>
-    <div class="box2">
-      <div class="box3">
-        <button class="btn" id="start-btn">スタート</button>
-        <button class="btn" id="reset-btn">リセット</button>
+  <body>
+    <div class="wrapper">
+      <div class="box1">
+        <p id="question-count"></p>
+        <pre id="start" class="text">Welcome to Typing Script game!</pre>
       </div>
-      <div class="box4">
-        <input type="text" id="user-input" placeholder="入力して下さい" disabled />
-        <p id="score"></p>
-        <p id="time"></p>
-        <p id="miss-count"></p>
+      <div class="box2">
+        <div class="box3">
+          <button class="btn" id="start-btn">スタート</button>
+          <button class="btn" id="reset-btn">リセット</button>
+        </div>
+        <div class="box4">
+          <input
+            type="text"
+            id="user-input"
+            placeholder="入力して下さい"
+            disabled
+          />
+          <p id="score"></p>
+          <p id="time"></p>
+          <p id="miss-count"></p>
+          <p id="question-count"></p>
+        </div>
       </div>
     </div>
-  </div>
-</body>
-
+  </body>
 </html>
