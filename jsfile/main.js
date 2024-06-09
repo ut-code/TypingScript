@@ -65,6 +65,10 @@ async function startGame() {
   question = await response.text();
   questionIndex = 0;
   questionLength = question.length;
+  // questionSection.textContent = question.substring(
+  //   questionIndex,
+  //   questionLength
+  // );
   highlightNextCharacter();
   updateDisplay();
   theQuestionCount.textContent = `Question ${questionCount}`;
@@ -111,7 +115,9 @@ function highlightNextCharacter() {
     .map((char, index) => {
       return index === questionIndex
         ? `<span class="highlight">${char}</span>`
-        : char;
+        : char !== " "
+        ? char
+        : "&nbsp;";
     })
     .join("");
   questionSection.innerHTML = highlightedText.replace(/\n/g, "<br>");
@@ -132,6 +138,10 @@ userInput.addEventListener("input", () => {
       questionCount++;
       questionSection.textContent = "";
     }
+    questionSection.textContent = question.substring(
+      questionIndex,
+      questionLength
+    );
     highlightNextCharacter();
     scoreElement.innerText = `Score: ${score}`;
     theQuestionCount.textContent = `Question ${questionCount}`;
